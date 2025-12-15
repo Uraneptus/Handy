@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "handy.refmap.json",
   "mixins": [
+    "DispenseItemBehaviorMixin"
   ],
   "client": [
   ],

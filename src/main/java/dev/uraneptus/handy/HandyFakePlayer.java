@@ -28,7 +28,6 @@ public class HandyFakePlayer extends FakePlayer {
 
     public HandyFakePlayer(ServerLevel level) {
         super(level, new GameProfile(ID, "HandyClicker"));
-        System.out.println("Player created");
     }
 
     @Override
@@ -51,6 +50,7 @@ public class HandyFakePlayer extends FakePlayer {
         return Component.literal("Faker");
     }
 
+    //TODO maybe we want to disable mob loot that only drops for the player too
     @SubscribeEvent
     public static void killsDontSpawnXP(LivingExperienceDropEvent event) {
         if (event.getAttackingPlayer() instanceof HandyFakePlayer) {

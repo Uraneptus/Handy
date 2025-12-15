@@ -69,7 +69,6 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
             Event.Result useBlock = event.getUseBlock();
             System.out.println(useBlock);
             if (useBlock != Event.Result.DENY) {
-                System.out.println("ello");
                 stateAtPos.use(serverlevel, player, hand, result);
                 player.discard();
                 return true;

@@ -3,6 +3,8 @@ package dev.uraneptus.handy;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +39,8 @@ public class Handy {
 
     public static final RegistryObject<Item> GLOVE_RIGHT = ITEMS.register("glove_right", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> GLOVE_LEFT = ITEMS.register("glove_left", () -> new Item(new Item.Properties()));
+
+    public static final TagKey<Item> GLOVES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("handy", "gloves"));
 
     public Handy() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
