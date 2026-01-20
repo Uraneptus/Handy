@@ -28,7 +28,7 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
         ServerLevel serverlevel = blockSource.getLevel();
         this.setSuccess(false);
         if (!serverlevel.isClientSide()) {
-            BlockPos blockposFacing = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING));
+            BlockPos blockposFacing = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING), 1);
             setSuccess(entityInteract(serverlevel, blockposFacing) || blockInteract(serverlevel, blockSource.getPos(), blockposFacing));
         }
         return itemStack;
@@ -64,15 +64,20 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
         if (!stateAtPos.getShape(serverlevel, blockposFacing).isEmpty()) {
             HandyFakePlayer player = new HandyFakePlayer(serverlevel);
             InteractionHand hand = InteractionHand.MAIN_HAND;
-            BlockHitResult result = serverlevel.clip(new ClipContext(blockPosOrigin.getCenter(), blockposFacing.getCenter(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
-            PlayerInteractEvent.RightClickBlock event = ForgeHooks.onRightClickBlock(player, hand, blockposFacing, result);
-            Event.Result useBlock = event.getUseBlock();
-            System.out.println(useBlock);
-            if (useBlock != Event.Result.DENY) {
-                stateAtPos.use(serverlevel, player, hand, result);
-                player.discard();
-                return true;
+            BlockHitResult hitResult = serverlevel.clip(new ClipContext(blockPosOrigin.getCenter(), blockposFacing.getCenter(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+            if (hitResult.getBlockPos() != blockposFacing) {
+                hitResult = new BlockHitResult(hitResult.getLocation(), hitResult.getDirection(), blockposFacing, hitResult.isInside());
             }
+            PlayerInteractEvent.RightClickBlock event = ForgeHooks.onRightClickBlock(player, hand, blockposFacing, hitResult);
+            Event.Result useBlock = event.getUseBlock();
+            if (useBlock != Event.Result.DENY) {
+                InteractionResult result = stateAtPos.use(serverlevel, player, hand, hitResult);
+                if (result.consumesAction()) {
+                    player.discard();
+                    return true;
+                }
+            }
+            player.discard();
         }
         return false;
     }
