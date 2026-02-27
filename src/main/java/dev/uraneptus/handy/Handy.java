@@ -37,8 +37,8 @@ public class Handy {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, MODID);
 
-    public static final RegistryObject<Item> GLOVE_RIGHT = ITEMS.register("glove_right", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GLOVE_LEFT = ITEMS.register("glove_left", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GLOVE_LEFT = ITEMS.register("glove_left", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> GLOVE_RIGHT = ITEMS.register("glove_right", () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final TagKey<Item> GLOVES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("handy", "gloves"));
 
