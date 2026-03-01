@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -12,6 +14,7 @@ import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -73,6 +76,9 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
             if (useBlock != Event.Result.DENY) {
                 InteractionResult result = stateAtPos.use(serverlevel, player, hand, hitResult);
                 if (result.consumesAction()) {
+                    if (stateAtPos.is(Blocks.CAKE)) {
+                        serverlevel.playSound(null, blockPosOrigin, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 0.4F, 1.0F);
+                    }
                     player.discard();
                     return true;
                 }

@@ -27,7 +27,7 @@ public class CraftyHandsFakePlayer extends FakePlayer {
 
     @Override
     public boolean canEat(boolean ignoreHunger) {
-        return false;
+        return true;
     }
 
     @Override
