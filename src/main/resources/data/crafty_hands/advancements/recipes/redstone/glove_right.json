@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "handy:glove_right"
+        "recipe": "crafty_hands:glove_right"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "handy:glove_right"
+      "crafty_hands:glove_right"
     ]
   },
   "sends_telemetry_event": false

@@ -1,6 +1,6 @@
-package dev.uraneptus.handy.mixin;
+package dev.uraneptus.crafty_hands.mixin;
 
-import dev.uraneptus.handy.Handy;
+import dev.uraneptus.crafty_hands.CraftyHands;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.world.item.ItemStack;
@@ -16,8 +16,8 @@ public class DispenseItemBehaviorMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/core/dispenser/DefaultDispenseItemBehavior;playAnimation(Lnet/minecraft/core/BlockSource;Lnet/minecraft/core/Direction;)V"),
             cancellable = true
     )
-    public void handy$dispense(BlockSource source, ItemStack itemStack, CallbackInfoReturnable<ItemStack> cir) {
-        if (itemStack.is(Handy.GLOVES)) {
+    public void crafty_hands$dispense(BlockSource source, ItemStack itemStack, CallbackInfoReturnable<ItemStack> cir) {
+        if (itemStack.is(CraftyHands.GLOVES)) {
             cir.setReturnValue(itemStack);
         }
     }

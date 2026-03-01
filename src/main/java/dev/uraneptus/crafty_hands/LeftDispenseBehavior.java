@@ -1,14 +1,12 @@
-package dev.uraneptus.handy;
+package dev.uraneptus.crafty_hands;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.HangingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -38,7 +36,7 @@ public class LeftDispenseBehavior extends OptionalDispenseItemBehavior {
         if (!entitiesAtPos.isEmpty()) {
             Entity randomEntityAtPos = entitiesAtPos.get(serverlevel.random.nextInt(entitiesAtPos.size()));
             if (!(randomEntityAtPos instanceof Player player && player.isCreative())) {
-                HandyFakePlayer player = new HandyFakePlayer(serverlevel);
+                CraftyHandsFakePlayer player = new CraftyHandsFakePlayer(serverlevel);
                 player.resetAttackStrengthTicker();
                 player.attack(randomEntityAtPos);
                 player.discard();
@@ -51,7 +49,7 @@ public class LeftDispenseBehavior extends OptionalDispenseItemBehavior {
     private boolean shouldBreakBlock(ServerLevel serverlevel, BlockPos blockposFacing) {
         BlockState stateAtPos = serverlevel.getBlockState(blockposFacing);
         if (!stateAtPos.isAir() && stateAtPos.getDestroySpeed(serverlevel, blockposFacing) <= 0.1F) {
-            return removeBlock(serverlevel, new HandyFakePlayer(serverlevel), blockposFacing, stateAtPos);
+            return removeBlock(serverlevel, new CraftyHandsFakePlayer(serverlevel), blockposFacing, stateAtPos);
         }
         return false;
     }

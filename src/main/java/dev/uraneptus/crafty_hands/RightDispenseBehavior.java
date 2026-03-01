@@ -1,4 +1,4 @@
-package dev.uraneptus.handy;
+package dev.uraneptus.crafty_hands;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
@@ -41,13 +41,13 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
                 .toList();
         if (!entitiesAtPos.isEmpty()) {
             Entity randomEntityAtPos = entitiesAtPos.get(serverlevel.random.nextInt(entitiesAtPos.size()));
-            HandyFakePlayer player = new HandyFakePlayer(serverlevel);
+            CraftyHandsFakePlayer player = new CraftyHandsFakePlayer(serverlevel);
             InteractionHand hand = InteractionHand.MAIN_HAND;
             InteractionResult cancelResult = ForgeHooks.onInteractEntity(player, randomEntityAtPos, hand);
             if (cancelResult == null) {
                 if (randomEntityAtPos.interact(player, hand).consumesAction()) {
                     if (randomEntityAtPos instanceof AbstractVillager villager) {
-                        if (villager.getTradingPlayer() instanceof HandyFakePlayer) {
+                        if (villager.getTradingPlayer() instanceof CraftyHandsFakePlayer) {
                             villager.setTradingPlayer(null);
                         }
                     }
@@ -62,7 +62,7 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
     private boolean blockInteract(ServerLevel serverlevel, BlockPos blockPosOrigin, BlockPos blockposFacing) {
         BlockState stateAtPos = serverlevel.getBlockState(blockposFacing);
         if (!stateAtPos.getShape(serverlevel, blockposFacing).isEmpty()) {
-            HandyFakePlayer player = new HandyFakePlayer(serverlevel);
+            CraftyHandsFakePlayer player = new CraftyHandsFakePlayer(serverlevel);
             InteractionHand hand = InteractionHand.MAIN_HAND;
             BlockHitResult hitResult = serverlevel.clip(new ClipContext(blockPosOrigin.getCenter(), blockposFacing.getCenter(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
             if (hitResult.getBlockPos() != blockposFacing) {

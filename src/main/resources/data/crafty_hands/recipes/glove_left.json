@@ -3,11 +3,11 @@
   "category": "redstone",
   "ingredients": [
     {
-      "item": "handy:glove_left"
+      "item": "crafty_hands:glove_right"
     }
   ],
   "result": {
     "count": 1,
-    "item": "handy:glove_right"
+    "item": "crafty_hands:glove_left"
   }
 }

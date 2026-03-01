@@ -1,9 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.uraneptus.handy.mixin",
+  "package": "dev.uraneptus.crafty_hands.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "handy.refmap.json",
+  "refmap": "crafty_hands.refmap.json",
   "mixins": [
     "DispenseItemBehaviorMixin"
   ],
