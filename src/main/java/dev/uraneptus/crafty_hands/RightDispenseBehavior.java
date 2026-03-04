@@ -4,16 +4,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -65,26 +70,38 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
     private boolean blockInteract(ServerLevel serverlevel, BlockPos blockPosOrigin, BlockPos blockposFacing) {
         BlockState stateAtPos = serverlevel.getBlockState(blockposFacing);
         if (!stateAtPos.getShape(serverlevel, blockposFacing).isEmpty()) {
-            CraftyHandsFakePlayer player = new CraftyHandsFakePlayer(serverlevel);
+            CraftyHandsFakePlayer clickerPlayer = new CraftyHandsFakePlayer(serverlevel);
             InteractionHand hand = InteractionHand.MAIN_HAND;
-            BlockHitResult hitResult = serverlevel.clip(new ClipContext(blockPosOrigin.getCenter(), blockposFacing.getCenter(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+            BlockHitResult hitResult = serverlevel.clip(new ClipContext(blockPosOrigin.getCenter(), blockposFacing.getCenter(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, clickerPlayer));
             if (hitResult.getBlockPos() != blockposFacing) {
                 hitResult = new BlockHitResult(hitResult.getLocation(), hitResult.getDirection(), blockposFacing, hitResult.isInside());
             }
-            PlayerInteractEvent.RightClickBlock event = ForgeHooks.onRightClickBlock(player, hand, blockposFacing, hitResult);
+            PlayerInteractEvent.RightClickBlock event = ForgeHooks.onRightClickBlock(clickerPlayer, hand, blockposFacing, hitResult);
             Event.Result useBlock = event.getUseBlock();
             if (useBlock != Event.Result.DENY) {
-                InteractionResult result = stateAtPos.use(serverlevel, player, hand, hitResult);
+                InteractionResult result = stateAtPos.use(serverlevel, clickerPlayer, hand, hitResult);
                 if (result.consumesAction()) {
                     if (stateAtPos.is(Blocks.CAKE)) {
                         serverlevel.playSound(null, blockPosOrigin, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 0.4F, 1.0F);
                     }
-                    player.discard();
+                    if (causesExplosion(stateAtPos, serverlevel)) {
+                        Player nearestPlayer = serverlevel.getNearestPlayer(TargetingConditions.forNonCombat().ignoreLineOfSight().range(2).selector(e -> e.isAlive() && !e.isSpectator()), blockPosOrigin.getX(), blockPosOrigin.getY(), blockPosOrigin.getZ());
+                        System.out.println(nearestPlayer);
+                        if (nearestPlayer instanceof ServerPlayer sp) {
+                            System.out.println(nearestPlayer.getName().getString());
+                            CraftyHands.CAUSE_EXPLOSION_TRIGGER.trigger(sp);
+                        }
+                    }
+                    clickerPlayer.discard();
                     return true;
                 }
             }
-            player.discard();
+            clickerPlayer.discard();
         }
         return false;
+    }
+
+    private boolean causesExplosion(BlockState state, Level level) {
+        return (state.is(BlockTags.BEDS) && !level.dimensionType().bedWorks()) || (state.is(Blocks.RESPAWN_ANCHOR) && !level.dimensionType().respawnAnchorWorks());
     }
 }

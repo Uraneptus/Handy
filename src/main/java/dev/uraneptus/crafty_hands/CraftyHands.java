@@ -1,6 +1,8 @@
 package dev.uraneptus.crafty_hands;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -31,7 +33,9 @@ public class CraftyHands {
     public static final RegistryObject<Item> GLOVE_LEFT = ITEMS.register("glove_left", () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> GLOVE_RIGHT = ITEMS.register("glove_right", () -> new Item(new Item.Properties().stacksTo(1)));
 
-    public static final TagKey<Item> GLOVES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("crafty_hands", "gloves"));
+    public static final TagKey<Item> GLOVES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "gloves"));
+
+    public static final PlayerTrigger CAUSE_EXPLOSION_TRIGGER = CriteriaTriggers.register(new PlayerTrigger(ResourceLocation.fromNamespaceAndPath(MODID, "cause_explosion")));
 
     public CraftyHands() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

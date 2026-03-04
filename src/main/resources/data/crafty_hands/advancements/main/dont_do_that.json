@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "cause_explosion": {
+      "trigger": "crafty_hands:cause_explosion"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.crafty_hands.dont_do_that.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "crafty_hands:glove_right"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.crafty_hands.dont_do_that.title"
+    }
+  },
+  "requirements": [
+    [
+      "cause_explosion"
+    ]
+  ]
+}
