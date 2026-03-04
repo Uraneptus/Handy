@@ -3,11 +3,14 @@
   "category": "redstone",
   "ingredients": [
     {
+      "item": "minecraft:phantom_membrane"
+    },
+    {
       "item": "crafty_hands:glove_right"
     }
   ],
   "result": {
     "count": 1,
-    "item": "crafty_hands:glove_left"
+    "item": "crafty_hands:phantom_glove_right"
   }
 }

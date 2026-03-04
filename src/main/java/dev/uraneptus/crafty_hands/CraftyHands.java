@@ -31,7 +31,9 @@ public class CraftyHands {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, MODID);
 
     public static final RegistryObject<Item> GLOVE_LEFT = ITEMS.register("glove_left", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> PHANTOM_GLOVE_LEFT = ITEMS.register("phantom_glove_left", () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> GLOVE_RIGHT = ITEMS.register("glove_right", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> PHANTOM_GLOVE_RIGHT = ITEMS.register("phantom_glove_right", () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final TagKey<Item> GLOVES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "gloves"));
 
@@ -50,8 +52,10 @@ public class CraftyHands {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            DispenserBlock.registerBehavior(GLOVE_LEFT.get(), new LeftDispenseBehavior());
-            DispenserBlock.registerBehavior(GLOVE_RIGHT.get(), new RightDispenseBehavior());
+            DispenserBlock.registerBehavior(GLOVE_LEFT.get(), new LeftDispenseBehavior(false));
+            DispenserBlock.registerBehavior(GLOVE_RIGHT.get(), new RightDispenseBehavior(false));
+            DispenserBlock.registerBehavior(PHANTOM_GLOVE_LEFT.get(), new LeftDispenseBehavior(true));
+            DispenserBlock.registerBehavior(PHANTOM_GLOVE_RIGHT.get(), new RightDispenseBehavior(true));
         });
     }
 

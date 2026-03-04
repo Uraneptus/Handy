@@ -17,12 +17,17 @@ import net.minecraft.world.phys.AABB;
 import java.util.List;
 
 public class LeftDispenseBehavior extends OptionalDispenseItemBehavior {
+    private final boolean isPhantom;
+
+    public LeftDispenseBehavior(boolean isPhantom) {
+        this.isPhantom = isPhantom;
+    }
 
     protected ItemStack execute(BlockSource blockSource, ItemStack itemStack) {
         ServerLevel serverlevel = blockSource.getLevel();
         this.setSuccess(false);
         if (!serverlevel.isClientSide()) {
-            BlockPos blockposFacing = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING));
+            BlockPos blockposFacing = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING), isPhantom ? 2 : 1);
             setSuccess(shouldAttack(serverlevel, blockposFacing) || shouldBreakBlock(serverlevel, blockposFacing));
         }
         return itemStack;

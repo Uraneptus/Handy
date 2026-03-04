@@ -31,12 +31,18 @@ import net.minecraftforge.eventbus.api.Event;
 import java.util.List;
 
 public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
+    private final boolean isPhantom;
+
+    public RightDispenseBehavior(boolean isPhantom) {
+        this.isPhantom = isPhantom;
+    }
 
     protected ItemStack execute(BlockSource blockSource, ItemStack itemStack) {
         ServerLevel serverlevel = blockSource.getLevel();
         this.setSuccess(false);
         if (!serverlevel.isClientSide()) {
-            BlockPos blockposFacing = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING), 1);
+            BlockPos blockposFacing = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING), isPhantom ? 2 : 1);
+            System.out.println(blockposFacing);
             setSuccess(entityInteract(serverlevel, blockposFacing) || blockInteract(serverlevel, blockSource.getPos(), blockposFacing));
         }
         return itemStack;

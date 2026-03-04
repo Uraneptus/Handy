@@ -1,6 +1,8 @@
 {
   "item.crafty_hands.glove_right": "Right Glove",
+  "item.crafty_hands.phantom_glove_right": "Right Phantom Glove",
   "item.crafty_hands.glove_left": "Left Glove",
+  "item.crafty_hands.phantom_glove_left": "Left Phantom Glove",
   "advancements.crafty_hands.dont_do_that.description": "Right click a bed or a respawn anchor in the wrong dimension using a glove",
   "advancements.crafty_hands.dont_do_that.title": "Don't do that"
 }
