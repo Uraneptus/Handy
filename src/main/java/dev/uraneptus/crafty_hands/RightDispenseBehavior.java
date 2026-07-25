@@ -1,7 +1,7 @@
 package dev.uraneptus.crafty_hands;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,9 +24,9 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.util.TriState;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 import java.util.List;
 
@@ -38,12 +38,12 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
     }
 
     protected ItemStack execute(BlockSource blockSource, ItemStack itemStack) {
-        ServerLevel serverlevel = blockSource.getLevel();
+        ServerLevel serverlevel = blockSource.level();
         this.setSuccess(false);
         if (!serverlevel.isClientSide()) {
-            BlockPos blockposFacing = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING), isPhantom ? 2 : 1);
+            BlockPos blockposFacing = blockSource.pos().relative(blockSource.state().getValue(DispenserBlock.FACING), isPhantom ? 2 : 1);
             System.out.println(blockposFacing);
-            setSuccess(entityInteract(serverlevel, blockposFacing) || blockInteract(serverlevel, blockSource.getPos(), blockposFacing));
+            setSuccess(entityInteract(serverlevel, blockposFacing) || blockInteract(serverlevel, blockSource.pos(), blockposFacing));
         }
         return itemStack;
     }
@@ -57,7 +57,7 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
             Entity randomEntityAtPos = entitiesAtPos.get(serverlevel.random.nextInt(entitiesAtPos.size()));
             CraftyHandsFakePlayer player = new CraftyHandsFakePlayer(serverlevel);
             InteractionHand hand = InteractionHand.MAIN_HAND;
-            InteractionResult cancelResult = ForgeHooks.onInteractEntity(player, randomEntityAtPos, hand);
+            InteractionResult cancelResult = CommonHooks.onInteractEntity(player, randomEntityAtPos, hand);
             if (cancelResult == null) {
                 if (randomEntityAtPos.interact(player, hand).consumesAction()) {
                     if (randomEntityAtPos instanceof AbstractVillager villager) {
@@ -82,10 +82,10 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
             if (hitResult.getBlockPos() != blockposFacing) {
                 hitResult = new BlockHitResult(hitResult.getLocation(), hitResult.getDirection(), blockposFacing, hitResult.isInside());
             }
-            PlayerInteractEvent.RightClickBlock event = ForgeHooks.onRightClickBlock(clickerPlayer, hand, blockposFacing, hitResult);
-            Event.Result useBlock = event.getUseBlock();
-            if (useBlock != Event.Result.DENY) {
-                InteractionResult result = stateAtPos.use(serverlevel, clickerPlayer, hand, hitResult);
+            PlayerInteractEvent.RightClickBlock event = CommonHooks.onRightClickBlock(clickerPlayer, hand, blockposFacing, hitResult);
+            TriState useBlock = event.getUseBlock();
+            if (useBlock != TriState.FALSE) {
+                InteractionResult result = stateAtPos.useWithoutItem(serverlevel, clickerPlayer, hitResult);
                 if (result.consumesAction()) {
                     if (stateAtPos.is(Blocks.CAKE)) {
                         serverlevel.playSound(null, blockPosOrigin, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 0.4F, 1.0F);

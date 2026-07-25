@@ -1,7 +1,7 @@
 package dev.uraneptus.crafty_hands;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -24,10 +24,10 @@ public class LeftDispenseBehavior extends OptionalDispenseItemBehavior {
     }
 
     protected ItemStack execute(BlockSource blockSource, ItemStack itemStack) {
-        ServerLevel serverlevel = blockSource.getLevel();
+        ServerLevel serverlevel = blockSource.level();
         this.setSuccess(false);
         if (!serverlevel.isClientSide()) {
-            BlockPos blockposFacing = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING), isPhantom ? 2 : 1);
+            BlockPos blockposFacing = blockSource.pos().relative(blockSource.state().getValue(DispenserBlock.FACING), isPhantom ? 2 : 1);
             setSuccess(shouldAttack(serverlevel, blockposFacing) || shouldBreakBlock(serverlevel, blockposFacing));
         }
         return itemStack;

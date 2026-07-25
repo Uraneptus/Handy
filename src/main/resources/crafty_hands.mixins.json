@@ -1,13 +1,9 @@
 {
   "required": true,
-  "minVersion": "0.8",
   "package": "dev.uraneptus.crafty_hands.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "refmap": "crafty_hands.refmap.json",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
     "DispenseItemBehaviorMixin"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1
