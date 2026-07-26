@@ -13,7 +13,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "crafty_hands:glove_right"
+      "id": "crafty_hands:glove_right"
     },
     "show_toast": true,
     "title": {
