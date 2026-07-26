@@ -42,7 +42,6 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
         this.setSuccess(false);
         if (!serverlevel.isClientSide()) {
             BlockPos blockposFacing = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING), isPhantom ? 2 : 1);
-            System.out.println(blockposFacing);
             setSuccess(entityInteract(serverlevel, blockposFacing) || blockInteract(serverlevel, blockSource.getPos(), blockposFacing));
         }
         return itemStack;
@@ -92,9 +91,7 @@ public class RightDispenseBehavior extends OptionalDispenseItemBehavior {
                     }
                     if (causesExplosion(stateAtPos, serverlevel)) {
                         Player nearestPlayer = serverlevel.getNearestPlayer(TargetingConditions.forNonCombat().ignoreLineOfSight().range(2).selector(e -> e.isAlive() && !e.isSpectator()), blockPosOrigin.getX(), blockPosOrigin.getY(), blockPosOrigin.getZ());
-                        System.out.println(nearestPlayer);
                         if (nearestPlayer instanceof ServerPlayer sp) {
-                            System.out.println(nearestPlayer.getName().getString());
                             CraftyHands.CAUSE_EXPLOSION_TRIGGER.trigger(sp);
                         }
                     }
